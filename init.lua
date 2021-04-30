@@ -44,6 +44,7 @@ end
 function update_lyrics()
     get_current(
         function(id, progress)
+            progress = progress + 200
             if module.current_id ~= id then
                 module.current_id = id
                 module.current_lyrics = nil
@@ -51,24 +52,29 @@ function update_lyrics()
                 get_lyrics(id)
             end
             local current_lyrics = ''
+            local next_lyrics = ''
             if module.current_lyrics then
                 -- print()
-                current_lyrics = module.current_lyrics:get(progress)
+                current_lyrics = module.current_lyrics:current(progress)
+                next_lyrics = module.current_lyrics:next(progress)
             end
 
-            -- local min = math.floor(progress / 60000)
-            -- local sec = math.floor(progress / 1000) % 60
-            -- local textbox = module.lyrics_wibox:get_children_by_id('current_lyrics')[1]
-            -- textbox.markup = string.format('<b>%s</b> %s:%s', current_lyrics, min, sec)
-            -- local shadow_textbox_list = module.lyrics_wibox:get_children_by_id('current_lyrics_shadow')
-            -- for i,shadow_textbox in ipairs(shadow_textbox_list) do
-            --     shadow_textbox.markup = string.format('<b>%s</b> %s:%s', current_lyrics, min, sec)
-            -- end
-            local textbox = module.lyrics_wibox:get_children_by_id('current_lyrics')[1]
-            textbox.markup = string.format('<b>%s</b>', current_lyrics)
+            local textbox_list = module.lyrics_wibox:get_children_by_id('current_lyrics')
+            for i, textbox in ipairs(textbox_list) do
+                textbox.markup = string.format('<b>%s</b>', current_lyrics)
+            end
             local shadow_textbox_list = module.lyrics_wibox:get_children_by_id('current_lyrics_shadow')
             for i, shadow_textbox in ipairs(shadow_textbox_list) do
                 shadow_textbox.markup = string.format('<b>%s</b>', current_lyrics)
+            end
+
+            local textbox_list = module.lyrics_wibox:get_children_by_id('next_lyrics')
+            for i, textbox in ipairs(textbox_list) do
+                textbox.markup = string.format('<b>%s</b>', next_lyrics)
+            end
+            local shadow_textbox_list = module.lyrics_wibox:get_children_by_id('next_lyrics_shadow')
+            for i, shadow_textbox in ipairs(shadow_textbox_list) do
+                shadow_textbox.markup = string.format('<b>%s</b>', next_lyrics)
             end
         end
     )
@@ -76,7 +82,7 @@ end
 
 local timer =
     gears.timer {
-    timeout = 0.2,
+    timeout = 0.5,
     call_now = false,
     autostart = false,
     callback = update_lyrics
@@ -86,97 +92,20 @@ module.lyrics_wibox =
     wibox {
     screen = screen.primary,
     width = screen.primary.workarea.width,
-    height = 100,
+    height = screen.primary.workarea.height,
     x = 0,
-    y = screen.primary.workarea.height - 100,
+    y = 0,
     bg = '#00000000',
     visible = true,
     ontop = true,
     type = 'utility',
     input_passthrough = true
 }
-module.lyrics_wibox:setup {
-    {
-        {
-            {
-                id = 'current_lyrics_shadow',
-                markup = '',
-                align = 'center',
-                valign = 'center',
-                font = '30',
-                widget = wibox.widget.textbox
-            },
-            fg = '#000000',
-            widget = wibox.container.background
-        },
-        left = 2,
-        top = 2,
-        widget = wibox.container.margin
-    },
-    {
-        {
-            {
-                id = 'current_lyrics_shadow',
-                markup = '',
-                align = 'center',
-                valign = 'center',
-                font = '30',
-                widget = wibox.widget.textbox
-            },
-            fg = '#00000099',
-            widget = wibox.container.background
-        },
-        left = 4,
-        top = 4,
-        widget = wibox.container.margin
-    },
-    {
-        {
-            {
-                id = 'current_lyrics_shadow',
-                markup = '',
-                align = 'center',
-                valign = 'center',
-                font = '30',
-                widget = wibox.widget.textbox
-            },
-            fg = '#00000099',
-            widget = wibox.container.background
-        },
-        top = -2,
-        widget = wibox.container.margin
-    },
-    {
-        {
-            {
-                id = 'current_lyrics_shadow',
-                markup = '',
-                align = 'center',
-                valign = 'center',
-                font = '30',
-                widget = wibox.widget.textbox
-            },
-            fg = '#00000099',
-            widget = wibox.container.background
-        },
-        left = -2,
-        widget = wibox.container.margin
-    },
-    {
-        {
-            id = 'current_lyrics',
-            markup = '',
-            align = 'center',
-            valign = 'center',
-            font = '30',
-            widget = wibox.widget.textbox
-        },
-        fg = '#bbcdff',
-        widget = wibox.container.background
-    },
-    layout = wibox.layout.stack
-}
 
+
+function module:setup(widget)
+    module.lyrics_wibox:setup(widget)
+end
 function module:start()
     timer:start()
     module.lyrics_wibox.visible = true

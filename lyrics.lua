@@ -1,7 +1,7 @@
 local module = {}
 local function lyrics_time_to_millisecond(time)
     local m, s, ps = string.match(time, '(%d-):(%d-)%.(%d+)')
-    return m * 60 * 1000 + s * 1000 + ps * 10
+    return m * 60 * 1000 + s * 1000 + ps
 end
 
 function module.convert_lyrics(text)
@@ -10,7 +10,9 @@ function module.convert_lyrics(text)
     for row in string.gmatch(text, '(.-)%c') do
         -- print("row: "..row)
         local content = string.match(row, '%[%d-:%d-%.%d+%](.*)')
+        -- print("content: "..content)
         for time in string.gmatch(row, '%[(%d-:%d-%.%d+)%]') do
+            -- print("time: "..time)
             local ms = lyrics_time_to_millisecond(time)
             table.insert(
                 lyrics.timeline,
@@ -27,8 +29,7 @@ function module.convert_lyrics(text)
             return a.time < b.time
         end
     )
-
-    function lyrics:get(time)
+    function lyrics:current(time)
         time = time + 500
         for i, item in ipairs(self.timeline) do
             if item.time > time then
@@ -37,12 +38,16 @@ function module.convert_lyrics(text)
         end
         return ''
     end
+    function lyrics:next(time)
+        time = time + 500
+        for i, item in ipairs(self.timeline) do
+            if item.time > time then
+                return item.content
+            end
+        end
+        return ''
+    end
     return lyrics
 end
 
 return module
--- local file = assert(io.open('test.lrc', 'r'))
--- local text = file:read('*all')
-
--- local ly = convert_lyrics(text)
--- ly:get(1000)
