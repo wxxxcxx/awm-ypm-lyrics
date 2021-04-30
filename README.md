@@ -23,7 +23,6 @@ ypm:setup{
         markup = '',
         align = 'center',
         valign = 'center',
-        font = font,
         widget = wibox.widget.textbox
     },
     {
@@ -31,7 +30,6 @@ ypm:setup{
         markup = '',
         align = 'center',
         valign = 'center',
-        font = font,
         widget = wibox.widget.textbox
     },
     layout = wibox.layout.fixed.vertical
