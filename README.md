@@ -1,12 +1,15 @@
-# YesPlayMusic desktop lyrics for AwesomeWM
+# YesPlayMusic desktop lyric for AwesomeWM
+
+![ScreenShot](./screenshot.png)
 
 ## 依赖
 
- YesPlayMusic master 分支最新版本
+ [YesPlayMusic](https://github.com/qier222/YesPlayMusic) master 分支最新版本
 
 ## 安装
 
 ``` sh
+# Clone 本项目到 AwesomeWM 配置目录
 git clone https://github.com/meetcw/awm-ypm-lyrics.git ~/.config/awesome/awm-ypm-lyrics
 
 ```
@@ -17,9 +20,10 @@ git clone https://github.com/meetcw/awm-ypm-lyrics.git ~/.config/awesome/awm-ypm
 local wibox = require('wibox')
 local ypm = require('awm-ypm-lyrics')
 
+-- 设置显示歌词的 Widget
 ypm:setup{
      {
-        id = 'current_lyrics',
+        id = 'current_lyric',
         markup = '',
         align = 'center',
         valign = 'center',
@@ -27,7 +31,7 @@ ypm:setup{
         widget = wibox.widget.textbox
     },
     {
-        id = 'next_lyrics',
+        id = 'next_lyric',
         markup = '',
         align = 'center',
         valign = 'center',
@@ -37,6 +41,7 @@ ypm:setup{
     layout = wibox.layout.fixed.vertical
 }
 
+-- 跟随 YesPlayMusic 的开启和关闭，显示隐藏歌词
 client.connect_signal(
     'manage',
     function(c)
@@ -45,7 +50,6 @@ client.connect_signal(
         end
     end
 )
-
 client.connect_signal(
     'unmanage',
     function(c)
