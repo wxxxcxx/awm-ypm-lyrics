@@ -55,26 +55,17 @@ function update_lyrics()
             local next_lyrics = ''
             if module.current_lyrics then
                 -- print()
-                current_lyrics = module.current_lyrics:current(progress)
-                next_lyrics = module.current_lyrics:next(progress)
+                current_lyric = module.current_lyrics:current(progress)
+                next_lyric = module.current_lyrics:next(progress)
             end
 
-            local textbox_list = module.lyrics_wibox:get_children_by_id('current_lyrics')
+            local textbox_list = module.lyrics_wibox:get_children_by_id('current_lyric')
             for i, textbox in ipairs(textbox_list) do
-                textbox.markup = string.format('<b>%s</b>', current_lyrics)
+                textbox.markup = string.format('<b>%s</b>', current_lyric)
             end
-            local shadow_textbox_list = module.lyrics_wibox:get_children_by_id('current_lyrics_shadow')
-            for i, shadow_textbox in ipairs(shadow_textbox_list) do
-                shadow_textbox.markup = string.format('<b>%s</b>', current_lyrics)
-            end
-
-            local textbox_list = module.lyrics_wibox:get_children_by_id('next_lyrics')
+            local textbox_list = module.lyrics_wibox:get_children_by_id('next_lyric')
             for i, textbox in ipairs(textbox_list) do
-                textbox.markup = string.format('<b>%s</b>', next_lyrics)
-            end
-            local shadow_textbox_list = module.lyrics_wibox:get_children_by_id('next_lyrics_shadow')
-            for i, shadow_textbox in ipairs(shadow_textbox_list) do
-                shadow_textbox.markup = string.format('<b>%s</b>', next_lyrics)
+                textbox.markup = string.format('<b>%s</b>', next_lyric)
             end
         end
     )
