@@ -56,16 +56,17 @@ function update_lyrics()
             if module.current_lyrics then
                 -- print()
                 current_lyric = module.current_lyrics:current(progress)
+
                 next_lyric = module.current_lyrics:next(progress)
             end
 
             local textbox_list = module.lyrics_wibox:get_children_by_id('current_lyric')
             for i, textbox in ipairs(textbox_list) do
-                textbox.markup = string.format('<b>%s</b>', current_lyric)
+                textbox.markup = string.format(' <b>%s</b> ', current_lyric)
             end
             local textbox_list = module.lyrics_wibox:get_children_by_id('next_lyric')
             for i, textbox in ipairs(textbox_list) do
-                textbox.markup = string.format('<b>%s</b>', next_lyric)
+                textbox.markup = string.format(' <b>%s</b> ', next_lyric)
             end
         end
     )
@@ -92,7 +93,6 @@ module.lyrics_wibox =
     type = 'utility',
     input_passthrough = true
 }
-
 
 function module:setup(widget)
     module.lyrics_wibox:setup(widget)
