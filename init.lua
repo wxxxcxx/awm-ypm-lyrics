@@ -13,10 +13,12 @@ function get_lyrics(id)
     spawn.easy_async_with_shell(
         string.format('curl -s "http://127.0.0.1:10754/lyric?id=%s"', id),
         function(out, error)
-            local data = json.decode(out)
-            if data.lrc then
-                local lrc_text = data.lrc.lyric
-                module.current_lyrics = lyrics.convert_lyrics(lrc_text)
+            local data = gears.protected_call.call(json.decode, out)
+            if data then
+                if data.lrc then
+                    local lrc_text = data.lrc.lyric
+                    module.current_lyrics = lyrics.convert_lyrics(lrc_text)
+                end
             end
             -- if data.tlyric then
             --     local tlrc_text = data.tlyric.lyric
@@ -31,11 +33,13 @@ function get_current(callback)
     spawn.easy_async_with_shell(
         'curl -s "http://127.0.0.1:27232/player"',
         function(out)
-            local data = json.decode(out)
-            local id = data.currentTrack.id
-            local progress = data.progress * 1000
-            if callback then
-                callback(id, progress)
+            local data = gears.protected_call.call(json.decode, out)
+            if data then
+                local id = data.currentTrack.id
+                local progress = data.progress * 1000
+                if callback then
+                    callback(id, progress)
+                end
             end
         end
     )
