@@ -84,31 +84,21 @@ local timer =
     callback = update_lyrics
 }
 
-module.lyrics_wibox =
-    wibox {
-    screen = screen.primary,
-    width = screen.primary.workarea.width,
-    height = screen.primary.workarea.height,
-    x = 0,
-    y = 0,
-    bg = '#00000000',
-    visible = true,
-    ontop = true,
-    type = 'utility',
-    input_passthrough = true
-}
-
-function module:setup(widget)
-    module.lyrics_wibox:setup(widget)
+function module:setup(box)
+    module.lyrics_wibox = box
 end
 function module:start()
-    timer:start()
-    module.lyrics_wibox.visible = true
+    if module.lyrics_wibox then
+        timer:start()
+        module.lyrics_wibox.visible = true
+    end
 end
 
 function module:stop()
-    timer:stop()
-    module.lyrics_wibox.visible = false
+    if module.lyrics_wibox then
+        timer:stop()
+        module.lyrics_wibox.visible = false
+    end
 end
 
 return module
