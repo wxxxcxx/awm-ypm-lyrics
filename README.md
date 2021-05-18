@@ -1,4 +1,4 @@
-# YesPlayMusic desktop lyric for AwesomeWM
+# YesPlayMusic Desktop Lyric for AwesomeWM
 
 ![ScreenShot](./screenshot.png)
 
