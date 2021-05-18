@@ -90,14 +90,12 @@ end
 function module:start()
     if module.lyrics_wibox then
         timer:start()
-        module.lyrics_wibox.visible = true
     end
 end
 
 function module:stop()
     if module.lyrics_wibox then
         timer:stop()
-        module.lyrics_wibox.visible = false
     end
 end
 
