@@ -18,6 +18,9 @@ setup 方法接收一个 wibox 或 wibar 作为参数。需要显示歌词时，
 
 以下是我使用的配置代码：
 
+<details>
+<summary>查看代码</summary>
+
 ``` lua
 local wibox = require('wibox')
 local dpi = beautiful.xresources.apply_dpi
@@ -222,13 +225,17 @@ local function get_lyrics_wibox(args)
     return lyrics_wibox
 end
 -- 初始化
-ypm:setup(get_lyrics_wibox())
+
+local lyrics_wibox = get_lyrics_wibox()
+ypm:setup(lyrics_wibox)
+
 -- 开启 YesPlayMusic 时，显示歌词
 client.connect_signal(
     'manage',
     function(c)
         if c.class == 'yesplaymusic' then
             ypm:start()
+            lyrics_wibox.visible = true
         end
     end
 )
@@ -238,9 +245,11 @@ client.connect_signal(
     function(c)
         if c.class == 'yesplaymusic' then
             ypm:stop()
+            lyrics_wibox.visible = false
         end
     end
 )
 
 ```
 
+</details>
