@@ -8,8 +8,7 @@ function module.convert_lyrics(text)
     local lyrics = {}
     lyrics.timeline = {}
     for row in string.gmatch(text, '(.-)%c') do
-        -- print("row: "..row)
-        local content = string.match(row, '%[%d-:%d-%.%d+%](.*)')
+        local content = string.gsub(row, '%[%d-:%d-%.%d+%]', '')
         -- print("content: "..content)
         for time in string.gmatch(row, '%[(%d-:%d-%.%d+)%]') do
             -- print("time: "..time)
